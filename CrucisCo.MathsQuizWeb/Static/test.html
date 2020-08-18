@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Angular UI Test</title>
+    <script src="../Scripts/angular.min.js"></script>
+    <script src="../Scripts/angular-animate.min.js"></script>
+    <script src="../Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <!--script src="example.js"></script-->
+    <script>
+  angular.module('ui.bootstrap.demo', ['ngAnimate', 'ui.bootstrap']);
+angular.module('ui.bootstrap.demo').controller('ProgressDemoCtrl', function ($scope, $sce) {
+        $scope.max = 200;
+        $scope.htmlTooltip = $sce.trustAsHtml('I\'ve been made <b>bold</b>!');
+      });
+
+    </script>
+    <link href="../Content/bootstrap.min.css" rel="stylesheet">
+    <!--meta charset="utf-8" /-->
+</head>
+<body ng-app="ui.bootstrap.demo">
+    <div ng-controller="ProgressDemoCtrl">
+        <div class="row">
+            <div class="col-sm-12">
+                <uib-progressbar value="55">55</uib-progressbar>
+            </div>
+        </div>
+
+        <p>
+            I can even contain HTML. <a href="#" uib-tooltip-html="htmlTooltip">Check me out!</a>
+        </p>
+    </div>
+
+    <span class="glyphicon glyphicon-ok"></span>
+</body>
+</html>

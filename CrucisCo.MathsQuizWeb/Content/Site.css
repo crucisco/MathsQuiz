@@ -1,0 +1,70 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+        
+input[type=checkbox] {
+    height: 20px;
+    width: 20px;
+}
+
+.form-answerinput {
+}
+
+.form-answerinput .label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.form-answerinput .text-lg {
+    font-size: 150%;
+}
+
+.form-answerinput .text-xlg {
+    font-size: 200%;
+}
+
+.form-answerinput .text-xxlg {
+    font-size: 250%;
+}
+
+.form-answerinput .input-lg {
+    font-size: 130%;
+    width: 150px;
+    line-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.form-answerinput .input-xlg {
+    font-size: 130%;
+    width: 250px;
+    line-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.progressContainer {
+    padding-top: 10px;
+}
