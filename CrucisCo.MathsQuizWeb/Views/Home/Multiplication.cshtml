@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Multiplication Tables Quiz";
+}
+
+<div class="page-header"><h2>@ViewBag.Title</h2></div>
+
+<div class="row" data-ng-app="MathsQuizApp" data-ng-controller="MultiplicationQuizController">
+    <div class="col-md-5">
+        <div class="panel panel-primary" data-ng-show="!quizRunning">
+            <div class="panel-heading">Pick something different whenever you do this.</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>Check only one to practice a particular table.  Or click more to practice many together randomly.</p>
+                        <a href="" class="input-lg" data-ng-click="toggleAllTables()">                           
+                            {{(selectedTables.length == 0) ? 'Select' : 'Clear'}} all
+                        </a>
+                        <p></p>
+                        <label class="input-lg" data-ng-repeat="t in tables">
+                            <input type="checkbox" class="" value="{{t}}" title="{{t}}" data-ng-click="toggleTableSelection(t)" data-ng-checked="selectedTables.indexOf(t) > -1" />
+                            {{t}}
+                        </label>
+
+                    </div>
+                </div>
+                <div class="row" data-ng-show="selectedTables !== null && selectedTables.length != 0 && !quizRunning">
+                    <div class="col-md-12">
+                        <a id="btnStart" data-ng-click="setQuizMultiple()" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-triangle-right"></span>Start</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="alert alert-info" data-ng-show="quizRunning">
+                Quiz multiples selected: {{selectedTables}}
+            </div>
+            <p class="text-info" data-ng-show="quizRunning"><a href="" data-ng-click="reset()">Restart</a></p>
+            <p class="has-error" data-ng-show="errorCondition">{{errorMessage}}</p>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="panel panel-success">
+            <div class="panel-heading"></div>
+        <div class="panel-body">
+        <div data-ng-show="quizRunning" class="form-group form-inline form-answerinput">
+            <div class="label label-success text-xxlg">
+                <span class="">{{problem.multiple}} x {{problem.multiplier}} = </span>
+                <input id="txtAnswer" type="number" class="form-control input-lg" data-ng-model="problem.answer" data-ng-disabled="quizTime === 0" data-ng-keyup="checkKeyAndSetAnswer()" />
+            </div>
+           <button id="btnNext" data-ng-click="setAnswer()" data-ng-disabled="quizTime === 0" class="btn btn-lg btn-success">Next ></button>
+            <div class="progressContainer">
+            <uib-progressbar class="progress-striped active" max="maxQuizTime" value="quizTime" type="{{quizStatus}}">{{quizTime}}</uib-progressbar>
+                </div>
+        </div>
+        <div data-ng-show="!quizRunning">
+            <p data-ng-show="results.length === 0">You do not have any results (yet).</p>
+            <div data-ng-show="results.length !== 0">
+                <p>You got {{(results|correctResults).length}} of {{results.length}} correct.</p>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Problem</th>
+                            <th>Answer</th>
+                            <th>Correct</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="r in results">
+                            <td>{{r.problem.multiple}} x {{r.problem.multiplier}}</td>
+                            <td class="{{r.isCorrect ? 'success text-success' : 'danger text-danger'}}"><b>{{r.problem.answer}}</b></td>
+                            <td class="{{r.isCorrect ? 'success' : 'danger'}}"><span class="glyphicon {{r.isCorrect ? 'glyphicon-ok' : 'glyphicon-remove'}}"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+<script type="text/javascript">
+    MathsQuizApp.value('MultiplicationQuizTime', @System.Configuration.ConfigurationManager.AppSettings["MultiplicationTime"]);
+</script>
+<script src="@Url.Content("~/Scripts/app/controllers/ng.MathsQuiz.MultiplicationQuizController.js")"></script>
+
+}

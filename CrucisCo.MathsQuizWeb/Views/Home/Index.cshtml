@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Maths Quiz Results";
+    ViewBag.Message = "These are your times table scores over the last month";
+
+}
+
+<div class="jumbotron">
+    <h1 class="hidden-sm hidden-xs">@ViewBag.Title</h1>
+    <h2 class="hidden-md hidden-lg visible-sm visible-xs">@ViewBag.Message</h2>
+    <span class="hidden-sm hidden-xs">
+        <p class="lead">Don't forget that you should practice EVERY DAY!</p>
+        <p>Answer at least <strong>25</strong> multiplication and <strong>10</strong> decimal questions.</p>
+    </span>
+</div>
+<div data-ng-app="MathsQuizApp">
+<div class="row"  data-ng-controller="MultiplicationQuizResultsController">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Multiplication Quiz Results
+            </div>
+            <div class="panel-body">
+                <canvas id="multiplicationBarChart" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-legend="true"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" data-ng-controller="DecimalQuizResultsController">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Decimals Quiz Results
+            </div>
+            <div class="panel-body">
+                <canvas id="decimalBarChart" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-legend="true"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@section scripts{
+    <script src="@Url.Content("~/Scripts/app/controllers/ng.MathsQuiz.MultiplicationQuizResultsController.js")"></script>
+    <script src="@Url.Content("~/Scripts/app/controllers/ng.MathsQuiz.DecimalQuizResultsController.js")"></script>
+}

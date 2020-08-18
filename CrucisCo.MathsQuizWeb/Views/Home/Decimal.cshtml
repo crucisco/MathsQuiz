@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Decimal Operations Quiz";
+}
+
+<div class="page-header"><h2>@ViewBag.Title</h2></div>
+
+<div class="row" data-ng-app="MathsQuizApp" data-ng-controller="DecimalQuizController">
+    <div class="col-md-5">
+        <div class="panel panel-primary" data-ng-show="!quizRunning">
+            <div class="panel-heading">Think about the <b>position</b> of the decimal point.</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>Move the sliders to pick the range of operators.</p>
+
+                        <div ui-slider="{range: true}" min="{{operatorMinIndex}}" max="{{operatorMaxIndex}}" data-tick step="1" ng-model="selectedOperators">
+                            <div class="ui-slider-out-of-bounds" style="left:0; width: 0"></div>
+                            <div class="ui-slider-out-of-bounds" style="right:0; width: 0"></div>
+                        </div>
+                        <div class="bg-info">
+                            <p class="text-center">
+                                Range: <span><strong>{{ selectedOperators[0]|toPowBase10 }}</strong> - <strong>{{ selectedOperators[1]|toPowBase10 }}</strong></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <p></p>
+                <div class="row" data-ng-show="selectedTables !== null && selectedTables.length != 0 && !quizRunning">
+                    <div class="col-md-12">
+                        <a id="btnStart" data-ng-click="setQuizOperators()" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-triangle-right"></span>Start</a>
+                    </div>
+                </div>
+                <div class="row" data-ng-hide="(selectedOperators[0] === -3 && selectedOperators[1] === 3)">
+                    <div class="col-md-12">
+                        <a href="" class="input-lg" data-ng-click="resetSelectedOperators()">Reset</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="alert alert-info" data-ng-show="quizRunning">
+                Operator range selected: {{selectedOperators[0]|toPowBase10}} to {{selectedOperators[1]|toPowBase10}}
+            </div>
+            <p class="text-info" data-ng-show="quizRunning"><a href="" data-ng-click="reset()">Restart</a></p>
+            <p class="has-error" data-ng-show="errorCondition">{{errorMessage}}</p>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="panel panel-success">
+            <div class="panel-heading"></div>
+            <div class="panel-body">
+                <div data-ng-show="quizRunning" class="form-group form-inline form-answerinput">
+                    <div class="label label-success text-xxlg">
+                        <span class="">{{problem.number}} {{(problem.problemOperation === 0 ? 'x' : '/')}} {{problem.operator}} = </span>
+                        <input id="txtAnswer" type="number" class="form-control input-xlg" data-ng-model="problem.answer" data-ng-disabled="quizTime === 0" data-ng-keyup="checkKeyAndSetAnswer()" />
+                    </div>
+                    <button id="btnNext" data-ng-click="setAnswer()" data-ng-disabled="quizTime === 0" class="btn btn-lg btn-success">Next ></button>
+                    <div class="progressContainer">
+                        <uib-progressbar class="progress-striped active" max="maxQuizTime" value="quizTime" type="{{quizStatus}}">{{quizTime}}</uib-progressbar>
+                    </div>
+                </div>
+                <div data-ng-show="!quizRunning">
+                    <p data-ng-show="results.length === 0">You do not have any results (yet).</p>
+                    <div data-ng-show="results.length !== 0">
+                        <p>You got {{(results|correctResults).length}} of {{results.length}} correct.</p>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Problem</th>
+                                    <th>Answer</th>
+                                    <th>Correct</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="r in results">
+                                    <td>{{r.problem.number}} {{(r.problem.problemOperation === 0 ? 'x' : '/')}} {{r.problem.operator}}</td>
+                                    <td class="{{r.isCorrect ? 'success text-success' : 'danger text-danger'}}"><b>{{r.problem.answer}}</b></td>
+                                    <td class="{{r.isCorrect ? 'success' : 'danger'}}"><span class="glyphicon {{r.isCorrect ? 'glyphicon-ok' : 'glyphicon-remove'}}"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        MathsQuizApp.value('DecimalsQuizTime', @System.Configuration.ConfigurationManager.AppSettings["DecimalsTime"]);
+    </script>
+
+    <script src="@Url.Content("~/Scripts/app/controllers/ng.MathsQuiz.DecimalQuizController.js")"></script>
+
+
+}
